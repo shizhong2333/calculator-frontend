@@ -1,24 +1,31 @@
 /* ============================================================
    前后端分离计算器 —— 样式表
-   规范：Google CSS/HTML 风格，类名采用 BEM 命名法
+   规范：Google CSS/HTML 风格，类名沿用 BEM 命名法
+   主题：方格稿纸 + 老式台式机（硬边框、硬阴影、LCD 显示区）
    ============================================================ */
 
 :root {
-  --color-bg: #f2f4f8;
-  --color-panel: #ffffff;
-  --color-primary: #2f6fed;
-  --color-primary-dark: #1f52b8;
-  --color-accent: #ff9500;
-  --color-danger: #e5484d;
-  --color-text: #1f2329;
-  --color-text-weak: #6b7280;
-  --color-border: #e3e8ef;
-  --color-key: #f7f8fa;
-  --color-key-active: #e9edf3;
-  --radius-lg: 16px;
-  --radius-md: 12px;
-  --radius-sm: 8px;
-  --shadow-panel: 0 8px 24px rgba(31, 35, 41, 0.08);
+  --ink: #23201a;
+  --ink-soft: #5c5347;
+  --ink-faint: #8b8071;
+  --paper: #f7f2e6;
+  --paper-2: #fffdf7;
+  --grid-line: rgba(35, 32, 26, 0.075);
+  --line: #d8cdb6;
+  --accent: #b8462c;
+  --accent-dark: #8f3421;
+  --teal: #2f5d50;
+  --teal-light: #3a7263;
+  --danger: #a8322b;
+  --ok: #2f6b46;
+  --lcd-bg: #16211a;
+  --lcd-fg: #9fdc7c;
+  --lcd-dim: #6f8f63;
+  --radius: 4px;
+  --hard-shadow: 6px 6px 0 rgba(35, 32, 26, 0.85);
+  --font-mono: "Consolas", "SFMono-Regular", "DejaVu Sans Mono", "Courier New", monospace;
+  --font-ui: "PingFang SC", "Microsoft YaHei", "Segoe UI", Arial, sans-serif;
+  --font-hand: "Kaiti SC", "KaiTi", "STKaiti", "楷体", "PingFang SC", serif;
 }
 
 * {
@@ -28,73 +35,133 @@
 body {
   margin: 0;
   min-height: 100vh;
-  padding: 32px 16px;
-  font-family: "Segoe UI", "PingFang SC", "Microsoft YaHei", Arial, sans-serif;
-  color: var(--color-text);
-  background: linear-gradient(160deg, #eef2fb 0%, #f7f8fa 100%);
+  padding: 36px 20px 48px;
+  font-family: var(--font-ui);
+  color: var(--ink);
+  background-color: #efe7d4;
+  background-image:
+    repeating-linear-gradient(to right, var(--grid-line) 0 1px, transparent 1px 26px),
+    repeating-linear-gradient(to bottom, var(--grid-line) 0 1px, transparent 1px 26px);
+  background-attachment: fixed;
+}
+
+/* 稿纸左侧的红色装订线 */
+body::before {
+  content: "";
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  left: 64px;
+  width: 1px;
+  background: rgba(184, 70, 44, 0.35);
+  pointer-events: none;
 }
 
 .app {
   width: 100%;
-  max-width: 960px;
+  max-width: 980px;
   margin: 0 auto;
 }
 
 .app__header {
-  text-align: center;
-  margin-bottom: 24px;
+  margin-bottom: 26px;
+  padding-bottom: 14px;
+  border-bottom: 2px dashed rgba(35, 32, 26, 0.32);
+}
+
+.app__eyebrow {
+  margin: 0 0 8px;
+  font-family: var(--font-mono);
+  font-size: 12px;
+  letter-spacing: 3px;
+  color: var(--accent);
 }
 
 .app__title {
   margin: 0;
-  font-size: 28px;
+  font-family: var(--font-hand);
+  font-size: 38px;
   font-weight: 700;
-  letter-spacing: 1px;
+  letter-spacing: 2px;
+}
+
+/* 标题下的一道"手绘"标记线 */
+.app__title::after {
+  content: "";
+  display: block;
+  width: 96px;
+  height: 6px;
+  margin-top: 8px;
+  background: var(--accent);
+  border-radius: 999px;
+  transform: rotate(-1.2deg);
 }
 
 .app__subtitle {
-  margin: 6px 0 0;
+  margin: 10px 0 0;
   font-size: 14px;
-  color: var(--color-text-weak);
+  color: var(--ink-soft);
 }
 
 .layout {
   display: grid;
   grid-template-columns: minmax(320px, 1fr) minmax(280px, 360px);
-  gap: 20px;
+  gap: 22px;
   align-items: start;
 }
 
 /* ---------- 计算器 ---------- */
 
 .calculator {
-  padding: 20px;
-  background: var(--color-panel);
-  border-radius: var(--radius-lg);
-  box-shadow: var(--shadow-panel);
+  padding: 22px;
+  background: var(--paper-2);
+  border: 2px solid var(--ink);
+  border-radius: var(--radius);
+  box-shadow: var(--hard-shadow);
 }
 
 .display {
-  padding: 16px;
+  position: relative;
+  padding: 20px 18px 14px;
   margin-bottom: 16px;
-  background: #0f172a;
-  border-radius: var(--radius-md);
+  background: var(--lcd-bg);
+  background-image: repeating-linear-gradient(
+    to bottom,
+    rgba(255, 255, 255, 0.035) 0 2px,
+    transparent 2px 4px
+  );
+  border: 2px solid var(--ink);
+  border-radius: var(--radius);
+  box-shadow: inset 0 6px 16px rgba(0, 0, 0, 0.55);
   text-align: right;
   overflow: hidden;
 }
 
+.display__tag {
+  position: absolute;
+  top: 7px;
+  left: 12px;
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 2px;
+  color: var(--lcd-dim);
+}
+
 .display__expression {
-  min-height: 26px;
-  font-size: 22px;
-  color: #e2e8f0;
+  min-height: 24px;
+  font-family: var(--font-mono);
+  font-size: 20px;
+  color: #cfd8c3;
   word-break: break-all;
 }
 
 .display__result {
   margin-top: 6px;
-  font-size: 30px;
+  font-family: var(--font-mono);
+  font-size: 34px;
   font-weight: 700;
-  color: #38bdf8;
+  color: var(--lcd-fg);
+  text-shadow: 0 0 10px rgba(159, 220, 124, 0.45);
   word-break: break-all;
 }
 
@@ -102,16 +169,16 @@ body {
   padding: 10px 14px;
   margin-bottom: 14px;
   font-size: 14px;
-  color: var(--color-danger);
-  background: #fdecec;
-  border: 1px solid #f8c9c9;
-  border-radius: var(--radius-sm);
+  color: #7d231d;
+  background: #fbe6e1;
+  border-left: 4px solid var(--danger);
+  border-radius: 2px;
 }
 
 .message--ok {
-  color: #0f7b3d;
-  background: #e8f7ee;
-  border-color: #bfe8cf;
+  color: #1f5237;
+  background: #e2f0e6;
+  border-left-color: var(--ok);
 }
 
 .keypad {
@@ -121,48 +188,84 @@ body {
 }
 
 .key {
-  height: 54px;
-  font-size: 18px;
-  font-weight: 600;
-  color: var(--color-text);
-  background: var(--color-key);
-  border: 1px solid var(--color-border);
-  border-radius: var(--radius-sm);
+  height: 56px;
+  font-family: var(--font-mono);
+  font-size: 19px;
+  font-weight: 700;
+  color: var(--ink);
+  background: var(--paper-2);
+  border: 2px solid var(--ink);
+  border-radius: var(--radius);
+  box-shadow: 3px 3px 0 rgba(35, 32, 26, 0.85);
   cursor: pointer;
-  transition: background 0.15s ease, transform 0.05s ease;
+  transition: transform 0.06s ease, box-shadow 0.06s ease, background 0.15s ease;
   user-select: none;
+  -webkit-tap-highlight-color: transparent;
 }
 
 .key:hover {
-  background: var(--color-key-active);
+  background: #f4ecda;
 }
 
 .key:active {
-  transform: scale(0.96);
+  transform: translate(3px, 3px);
+  box-shadow: 0 0 0 rgba(35, 32, 26, 0);
+}
+
+.key:focus-visible {
+  outline: 3px solid rgba(184, 70, 44, 0.5);
+  outline-offset: 2px;
 }
 
 .key--num {
-  background: #ffffff;
+  background: #fffdf7;
 }
 
 .key--op {
-  color: var(--color-primary);
-  background: #eaf1ff;
+  color: #ffffff;
+  background: var(--teal);
+}
+
+.key--op:hover {
+  background: var(--teal-light);
 }
 
 .key--fn {
-  color: var(--color-text-weak);
+  font-size: 16px;
+  color: var(--ink-soft);
+  background: #ece3d0;
+}
+
+.key--fn:hover {
+  background: #e2d7bf;
 }
 
 .key--equals {
   grid-column: span 4;
+  height: 58px;
+  font-size: 22px;
+  letter-spacing: 4px;
   color: #ffffff;
-  background: var(--color-primary);
-  border-color: var(--color-primary);
+  background: var(--accent);
 }
 
 .key--equals:hover {
-  background: var(--color-primary-dark);
+  background: var(--accent-dark);
+}
+
+.calculator__note {
+  margin: 16px 0 0;
+  font-size: 12px;
+  line-height: 1.75;
+  color: var(--ink-faint);
+}
+
+.calculator__note code {
+  padding: 1px 5px;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  background: #ece3d0;
+  border-radius: 3px;
 }
 
 /* ---------- 历史记录 ---------- */
@@ -170,23 +273,29 @@ body {
 .history {
   display: flex;
   flex-direction: column;
-  max-height: 620px;
+  max-height: 640px;
   padding: 20px;
-  background: var(--color-panel);
-  border-radius: var(--radius-lg);
-  box-shadow: var(--shadow-panel);
+  background: var(--paper-2);
+  border: 2px solid var(--ink);
+  border-radius: var(--radius);
+  box-shadow: var(--hard-shadow);
 }
 
 .history__header {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  margin-bottom: 12px;
+  gap: 10px;
+  margin-bottom: 14px;
+  padding-bottom: 10px;
+  border-bottom: 2px dashed rgba(35, 32, 26, 0.28);
 }
 
 .history__title {
   margin: 0;
-  font-size: 18px;
+  font-family: var(--font-hand);
+  font-size: 22px;
+  letter-spacing: 1px;
 }
 
 .history__actions {
@@ -196,25 +305,37 @@ body {
 
 .btn {
   padding: 6px 12px;
-  font-size: 13px;
-  border: 1px solid var(--color-border);
-  border-radius: var(--radius-sm);
-  background: #ffffff;
+  font-family: var(--font-mono);
+  font-size: 12px;
+  color: var(--ink);
+  background: var(--paper-2);
+  border: 2px solid var(--ink);
+  border-radius: var(--radius);
+  box-shadow: 2px 2px 0 rgba(35, 32, 26, 0.8);
   cursor: pointer;
-  transition: background 0.15s ease;
+  transition: transform 0.06s ease, box-shadow 0.06s ease, background 0.15s ease;
 }
 
 .btn:hover {
-  background: var(--color-key-active);
+  background: #f1e9d7;
 }
 
-.btn--danger {
-  color: var(--color-danger);
-  border-color: #f8c9c9;
+.btn:active {
+  transform: translate(2px, 2px);
+  box-shadow: 0 0 0 rgba(35, 32, 26, 0);
 }
 
 .btn--ghost {
-  color: var(--color-text-weak);
+  color: var(--ink-soft);
+}
+
+.btn--danger {
+  color: #ffffff;
+  background: var(--danger);
+}
+
+.btn--danger:hover {
+  background: #8f2b24;
 }
 
 .history__list {
@@ -232,8 +353,10 @@ body {
   gap: 10px;
   padding: 10px 12px;
   margin-bottom: 8px;
-  background: var(--color-key);
-  border-radius: var(--radius-sm);
+  background: #fbf5e6;
+  border: 1px solid var(--line);
+  border-left: 4px solid var(--teal);
+  border-radius: 2px;
 }
 
 .history__content {
@@ -241,90 +364,133 @@ body {
 }
 
 .history__expression {
+  font-family: var(--font-mono);
   font-size: 13px;
-  color: var(--color-text-weak);
+  color: var(--ink-soft);
   word-break: break-all;
 }
 
 .history__result {
-  font-size: 16px;
+  font-family: var(--font-mono);
+  font-size: 17px;
   font-weight: 700;
+  color: var(--ink);
   word-break: break-all;
 }
 
 .history__time {
-  margin-top: 2px;
-  font-size: 12px;
-  color: #9aa3af;
+  margin-top: 3px;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--ink-faint);
 }
 
 .history__delete {
   flex-shrink: 0;
-  padding: 4px 9px;
-  font-size: 12px;
-  color: var(--color-danger);
-  background: #ffffff;
-  border: 1px solid #f8c9c9;
-  border-radius: var(--radius-sm);
+  padding: 4px 10px;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--danger);
+  background: var(--paper-2);
+  border: 1px solid rgba(168, 50, 43, 0.5);
+  border-radius: 2px;
   cursor: pointer;
 }
 
 .history__delete:hover {
-  background: #fdecec;
+  color: #ffffff;
+  background: var(--danger);
+  border-color: var(--danger);
 }
 
 .history__empty {
   margin: 0;
-  padding: 24px 0;
+  padding: 28px 0;
   text-align: center;
-  font-size: 14px;
-  color: #9aa3af;
+  font-family: var(--font-hand);
+  font-size: 15px;
+  color: var(--ink-faint);
+}
+
+.history__note {
+  margin: 14px 0 0;
+  padding-top: 10px;
+  font-size: 11px;
+  line-height: 1.7;
+  color: var(--ink-faint);
+  border-top: 1px dashed rgba(35, 32, 26, 0.25);
 }
 
 /* ---------- 页脚 ---------- */
 
 .app__footer {
   display: flex;
+  flex-wrap: wrap;
   align-items: center;
   gap: 12px;
-  margin-top: 18px;
-  font-size: 13px;
-  color: var(--color-text-weak);
+  margin-top: 22px;
+  font-size: 12px;
+  color: var(--ink-soft);
 }
 
 .badge {
-  padding: 3px 10px;
-  font-size: 12px;
+  padding: 4px 12px;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.5px;
+  color: var(--ink-soft);
+  background: #e6dcc7;
+  border: 1px solid var(--line);
   border-radius: 999px;
-  background: #eceff3;
-  color: var(--color-text-weak);
 }
 
 .badge--ok {
-  color: #0f7b3d;
-  background: #e8f7ee;
+  color: #1f5237;
+  background: #dceee1;
+  border-color: #a9cdb6;
 }
 
 .badge--error {
-  color: var(--color-danger);
-  background: #fdecec;
+  color: #7d231d;
+  background: #f7dbd6;
+  border-color: #e0aaa2;
 }
 
 .app__hint code {
-  padding: 1px 6px;
-  font-size: 12px;
-  background: #eceff3;
-  border-radius: 4px;
+  padding: 2px 6px;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  background: #e6dcc7;
+  border-radius: 3px;
 }
 
 /* ---------- 响应式 ---------- */
 
-@media (max-width: 760px) {
+@media (max-width: 1180px) {
+  body::before {
+    display: none;
+  }
+}
+
+@media (max-width: 780px) {
+  body {
+    padding: 22px 14px 36px;
+  }
+
   .layout {
     grid-template-columns: 1fr;
   }
 
   .history {
     max-height: none;
+  }
+
+  .app__title {
+    font-size: 30px;
+  }
+
+  .key {
+    height: 50px;
+    font-size: 17px;
   }
 }

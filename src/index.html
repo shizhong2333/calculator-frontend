@@ -9,14 +9,16 @@
 <body>
   <div class="app">
     <header class="app__header">
+      <p class="app__eyebrow">软件工程实践 · 个人作业</p>
       <h1 class="app__title">前后端分离计算器</h1>
-      <p class="app__subtitle">前端负责交互 · 后端负责计算</p>
+      <p class="app__subtitle">前端只负责交互与展示 · 每一次运算都真的由后端算出来</p>
     </header>
 
     <main class="layout">
       <!-- 计算器区域 -->
       <section class="calculator" aria-label="计算器">
         <div class="display">
+          <span class="display__tag">LCD-1985</span>
           <div class="display__expression" id="expressionDisplay">0</div>
           <div class="display__result" id="resultDisplay">= 0</div>
         </div>
@@ -26,6 +28,11 @@
         <div class="keypad" id="keypad">
           <!-- 按键由 app.js 动态生成 -->
         </div>
+
+        <p class="calculator__note">
+          按键只往表达式里追加字符，点 <code>=</code> 时整条表达式会被送到后端
+          <code>/api/calculate</code> 解析求值，前端不保留任何计算逻辑。
+        </p>
       </section>
 
       <!-- 历史记录区域 -->
@@ -39,6 +46,7 @@
         </div>
         <ul class="history__list" id="historyList"></ul>
         <p class="history__empty" id="historyEmpty">暂无历史记录</p>
+        <p class="history__note">每条记录都写在服务器端的 SQLite 里，刷新页面、关掉浏览器再打开都还在。</p>
       </section>
     </main>
 
