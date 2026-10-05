@@ -10,11 +10,46 @@
   'use strict';
 
   /**
-   * 后端 API 根地址。
-   * 部署或联调时修改此常量即可指向不同的后端服务。
+   * 本地开发环境的后端 API 根地址。
    * @const {string}
    */
-  var API_BASE = 'http://127.0.0.1:5000';
+  var LOCAL_API_BASE = 'http://127.0.0.1:5000';
+
+  /**
+   * 公网已上线环境的后端 API 根地址（PythonAnywhere）。
+   * @const {string}
+   */
+  var REMOTE_API_BASE = 'https://shizhong2333.pythonanywhere.com';
+
+  /**
+   * 按运行环境自动解析后端 API 根地址。
+   * - 以 file:// 直接打开页面，或访问 localhost / 127.0.0.1 / 本机回环地址 → 本地开发
+   * - 其余（GitHub Pages、PythonAnywhere 等公网域名）→ 线上后端
+   * @return {string} 后端 API 根地址。
+   */
+  function resolveApiBase() {
+    var protocol = window.location.protocol;
+    var hostname = window.location.hostname;
+
+    if (protocol === 'file:') {
+      return LOCAL_API_BASE;
+    }
+    if (!hostname) {
+      return LOCAL_API_BASE;
+    }
+    if (hostname === 'localhost' || hostname === '127.0.0.1' ||
+        hostname === '0.0.0.0' || hostname === '[::1]' ||
+        hostname.indexOf('127.') === 0) {
+      return LOCAL_API_BASE;
+    }
+    return REMOTE_API_BASE;
+  }
+
+  /**
+   * 后端 API 根地址（自动适配本地开发 / 公网部署两种环境）。
+   * @const {string}
+   */
+  var API_BASE = resolveApiBase();
 
   /**
    * 计算器按键配置。

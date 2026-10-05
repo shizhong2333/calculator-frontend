@@ -49,14 +49,22 @@ python -m http.server 8080
 
 ## 6. 配置说明
 
-前端需要知道后端服务地址，配置位置在 `src/app.js` 顶部：
+前端会按运行环境自动选择后端地址，无需手动改配置，配置位置在 `src/app.js` 顶部：
 
 ```javascript
-var API_BASE = 'http://127.0.0.1:5000';
+// 本地开发：file:// 直接打开，或通过 localhost / 127.0.0.1 访问
+var LOCAL_API_BASE = 'http://127.0.0.1:5000';
+
+// 公网访问：GitHub Pages、PythonAnywhere 等非本机回环地址
+var REMOTE_API_BASE = 'https://shizhong2333.pythonanywhere.com';
 ```
 
-- 若后端部署在其他主机 / 端口，修改此常量即可；
-- 页面底部会展示当前使用的后端地址以及连接状态徽标。
+- 以 `file://` 直接打开页面，或通过 `localhost` / `127.0.0.1` / `0.0.0.0` / `[::1]` 访问时，
+  自动使用本地后端 `http://127.0.0.1:5000`；
+- 部署到公网后（访问域名不是本机回环地址），自动使用已上线后端
+  `https://shizhong2333.pythonanywhere.com`；
+- 如需更换后端地址，只需修改上述两个常量；
+- 页面底部会展示当前实际使用的后端地址以及连接状态徽标。
 
 ## 7. 后端连接方式
 
