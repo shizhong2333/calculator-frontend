@@ -1,0 +1,12 @@
+# Editor / IDE
+.idea/
+.vscode/
+*.swp
+.DS_Store
+
+# Node（本项目未使用构建工具，保留以便扩展）
+node_modules/
+npm-debug.log*
+
+# 临时文件
+*.log

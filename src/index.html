@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>前后端分离计算器</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="app">
+    <header class="app__header">
+      <h1 class="app__title">前后端分离计算器</h1>
+      <p class="app__subtitle">前端负责交互 · 后端负责计算</p>
+    </header>
+
+    <main class="layout">
+      <!-- 计算器区域 -->
+      <section class="calculator" aria-label="计算器">
+        <div class="display">
+          <div class="display__expression" id="expressionDisplay">0</div>
+          <div class="display__result" id="resultDisplay">= 0</div>
+        </div>
+
+        <div class="message" id="messageArea" role="alert" hidden></div>
+
+        <div class="keypad" id="keypad">
+          <!-- 按键由 app.js 动态生成 -->
+        </div>
+      </section>
+
+      <!-- 历史记录区域 -->
+      <section class="history" aria-label="计算历史">
+        <div class="history__header">
+          <h2 class="history__title">计算历史</h2>
+          <div class="history__actions">
+            <button type="button" class="btn btn--ghost" id="refreshHistoryBtn">刷新</button>
+            <button type="button" class="btn btn--danger" id="clearHistoryBtn">清空全部</button>
+          </div>
+        </div>
+        <ul class="history__list" id="historyList"></ul>
+        <p class="history__empty" id="historyEmpty">暂无历史记录</p>
+      </section>
+    </main>
+
+    <footer class="app__footer">
+      <span class="badge" id="apiBadge">后端连接中…</span>
+      <span class="app__hint">后端地址：<code id="apiBaseLabel"></code></span>
+    </footer>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>
