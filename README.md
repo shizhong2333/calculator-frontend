@@ -84,6 +84,7 @@ frontend/
 │   ├── index.html      # 页面结构
 │   ├── style.css       # 样式
 │   └── app.js          # 交互逻辑与 API 调用
+├── index.html          # 根目录入口页（GitHub Pages 使用，自动跳转到 src/index.html）
 ├── README.md
 └── codestyle.md
 ```
